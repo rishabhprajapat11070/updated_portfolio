@@ -441,7 +441,7 @@ const ItemsEditor = ({ type, items, onChange }) => {
         onClick={() => onChange([...items, { ...emptyItem }])}
         className="rounded-full border-2 border-dashed border-black px-5 py-2 text-xs font-bold uppercase transition hover:bg-black hover:text-white"
       >
-        + Item add karo
+        + Add item  
       </button>
     </div>
   );
@@ -578,7 +578,7 @@ const Dashboard = ({ onLogout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fff8eb] text-black">
+    <div className="min-h-screen bg- text-black">
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <h1 className="text-4xl font-black uppercase leading-[0.9] tracking-tighter sm:text-5xl">
@@ -591,7 +591,7 @@ const Dashboard = ({ onLogout }) => {
               onClick={openNew}
               className="rounded-full bg-black px-5 py-2.5 text-xs font-bold uppercase text-white transition hover:bg-orange-600"
             >
-              + Naya section
+              + New section
             </button>
             </div>
         </header>
@@ -786,7 +786,7 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-[#fff8eb] text-black">
-      <nav className="border-b-2 border-black bg-white">
+      <nav className="border-b-2 border-black bg-[#fff8eb]">
         <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3 sm:px-6">
           {[["posts", "Posts"], ["sections", "Sections"]].map(([k, l]) => (
             <button

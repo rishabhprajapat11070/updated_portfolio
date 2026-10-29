@@ -141,4 +141,4 @@ const DynamicSections = () => {
   });
 };
 
-export default memo(DynamicSections);
+export default memo(DynamicSections); 
