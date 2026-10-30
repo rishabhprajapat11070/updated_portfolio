@@ -572,10 +572,10 @@ const Dashboard = ({ onLogout }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("admin_token");
-    onLogout();
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("admin_token");
+  //   onLogout();
+  // };
 
   return (
     <div className="min-h-screen bg- text-black">
