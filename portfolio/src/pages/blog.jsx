@@ -2,10 +2,10 @@ import { memo, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 /* Django se posts laao aur field names component ke hisaab se map karo */
-import { publicApi } from "../api";
+import { adminApi } from "../api";
 
 const fetchPosts = async (signal) => {
-  const { data } = await publicApi.get("/posts/", { signal });
+  const { data } = await adminApi.get("/posts/", { signal });
   const list = Array.isArray(data) ? data : data.results || [];
   return list.map((p) => ({
     ...p,

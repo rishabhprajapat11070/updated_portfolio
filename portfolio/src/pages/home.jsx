@@ -1,7 +1,8 @@
-import { memo ,useState,useEffect} from "react";
+import { memo } from "react";
+
 import greenrishabh from "../assets/greenrishabh.jpeg"
-import { publicApi } from "../api";      
-import DynamicSections from "../components/DynamicSections";
+    
+// import DynamicSections from "../components/DynamicSections";
 
 /* ------------------------------------------------------------------ */
 /*  CV DATA — edit the data here react will update automaticlly      */
@@ -12,8 +13,8 @@ const profile = {
   name: "Rishabh Prajapat",
   title: "AI/ML & Python Backend Developer",
   location: "Indore, Madhya Pradesh, India",
-  email: "your-email@example.com", // TODO
-  phone: "+91 XXXXX XXXXX", // TODO
+  email: "rp892422@gamil.com", // TODO
+  phone: "+91 7509926228", // TODO
   github: "https://github.com/rishabhprajapat11070",
   linkedin: "https://linkedin.com/in/your-username", // TODO
   resume: "/resume.pdf", // TODO: public/ folder mein resume.pdf rakho
@@ -86,16 +87,16 @@ const Tag = ({ children }) => (
 );
 
 const Home = () => {
-const [sections, setSections] = useState([]);
+// const [sections, setSections] = useState([]);
 
-useEffect(() => {
-  publicApi.get("/sections/")
-    .then(({ data }) => {
-      console.log("sections:", data);              // debug ke liye
-      setSections(Array.isArray(data) ? data : data.results || []);
-    })
-    .catch((e) => console.error("sections error:", e));
-}, []);
+// useEffect(() => {
+//   adminApi.get("/sections/")
+//     .then(({ data }) => {
+//       console.log("sections:", data);              // debug ke liye
+//       setSections(Array.isArray(data) ? data : data.results || []);
+//     })
+//     .catch((e) => console.error("sections error:", e));
+// }, []);
   return (
     <div className="bg-[#fff8eb] text-black">
       <main>
@@ -108,13 +109,15 @@ useEffect(() => {
             <p className="inline-block rounded-full border-2 border-black bg-white px-4 py-1 text-xs font-bold">
               Internship / junior roles ke liye available
             </p>
-            <h1 className="mt-5 text-5xl font-black uppercase leading-[0.85] tracking-tighter sm:text-7xl lg:text-8xl">
+            {/* MAIN HEADING TOP LINE   */}
+          <h1 className="mt-5 animate-[fade-up_0.7s_ease-out_both] text-5xl font-black uppercase leading-[0.85] tracking-tighter motion-reduce:animate-none sm:text-7xl lg:text-8xl">
               Python
               <br />
               backend,
               <br />
               <span className="text-orange-600">real</span> apps.
             </h1>
+              
             <p className="mt-6 max-w-xl text-base leading-relaxed text-black/70 sm:text-lg">
               {profile.summary}
             </p>
@@ -334,8 +337,7 @@ useEffect(() => {
           </div>
         </section>
       </main>
-      <DynamicSections />
-    </div>
+     </div>
   );
 };
 

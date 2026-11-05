@@ -4,7 +4,7 @@ import Footer from './components/footer';
 import Home from './pages/home';
 import Blog from './pages/blog';
 import { Route,Routes } from 'react-router-dom';
-import AdminPost from "./pages/AdminPost";
+import AdminPost from "./pages/adminpost";
 
 
  

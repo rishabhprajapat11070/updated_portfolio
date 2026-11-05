@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "rest_framework",
     "rest_framework.authtoken",
-    "sections",
     "blog"
    ]
 
@@ -57,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.secrity.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
@@ -138,11 +139,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-REST_FRAMEWORK = {
-       "DEFAULT_AUTHENTICATION_CLASSES": [
-           "rest_framework.authentication.TokenAuthentication",
-       ],
-       "DEFAULT_THROTTLE_RATES": {"login": "10/min"},
-   }
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+}
+
