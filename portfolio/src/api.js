@@ -2,7 +2,7 @@ import axios from "axios";
 
 // const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 export const adminApi = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL:  import.meta.env.VITE_API_URL,
 });
 
 // Public: visitors ke liye, token nahi bhejta (hidden sections kabhi nahi aate)
