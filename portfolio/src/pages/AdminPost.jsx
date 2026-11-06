@@ -114,9 +114,35 @@ const load = useCallback(async () => {
   }
 }, [handleErr]);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+useEffect(() => {
+  let ignore = false;
+
+  const fetchPosts = async () => {
+    try {
+      const { data } = await adminApi.get("/posts/");
+
+      const list = Array.isArray(data) ? data : data?.results;
+
+      if (!ignore) {
+        setPosts(Array.isArray(list) ? list : []);
+      }
+    } catch (err) {
+      if (!ignore) {
+        handleErr(err, "Posts load nahi hue.");
+      }
+    } finally {
+      if (!ignore) {
+        setLoading(false);
+      }
+    }
+  };
+
+  fetchPosts();
+
+  return () => {
+    ignore = true;
+  };
+}, [handleErr]);;
 
   const openEdit = (p) =>
     setForm({
