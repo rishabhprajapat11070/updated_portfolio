@@ -88,20 +88,41 @@ const Tag = ({ children }) => (
 );
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
-  const [blogLoading, setBlogLoading] = useState(true);
-  const [blogError, setBlogError] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/posts/`) // TODO: apna endpoint match karo
-      .then((res) => {
-        const list = Array.isArray(res.data) ? res.data : res.data.results || [];
-              setPosts(list.slice(0, 4));
-      })
-      .catch(() => setBlogError(true))
-      .finally(() => setBlogLoading(false));
-  }, []);
+const [posts, setPosts] = useState([]);
+const [blogLoading, setBlogLoading] = useState(true);
+const [blogError, setBlogError] = useState(false);
+
+useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      setBlogLoading(true);
+      setBlogError(false);
+
+      const res = await axios.get(`${API_URL}/posts/`);
+
+      // Handle both array and paginated API responses
+      const list = Array.isArray(res.data)
+        ? res.data
+        : Array.isArray(res.data?.results)
+        ? res.data.results
+        : [];
+
+      setPosts(list.slice(0, 4));
+
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+      setBlogError(true);
+      setPosts([]);
+
+    } finally {
+      setBlogLoading(false);
+    }
+  };
+
+  fetchPosts();
+}, []);
+
   return (
     <div className="bg-[#fff8eb] text-black">
       <main>
