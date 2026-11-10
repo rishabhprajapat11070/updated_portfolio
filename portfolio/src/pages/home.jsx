@@ -99,7 +99,7 @@ useEffect(() => {
       setBlogLoading(true);
       setBlogError(false);
 
-      const res = await axios.get(`${API_URL}/posts/`);
+      const res = await axios.get(`${API_URL}posts/`);
 
       // Handle both array and paginated API responses
       const list = Array.isArray(res.data)
