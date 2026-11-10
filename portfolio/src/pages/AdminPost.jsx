@@ -45,8 +45,7 @@ const Login = ({ onLogin }) => {
     }
   };
 
-  console.log(adminApi)
-
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fff8eb] px-4">
       <form
