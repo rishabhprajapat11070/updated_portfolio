@@ -89,40 +89,6 @@ const Tag = ({ children }) => (
 
 const Home = () => {
 
-const [posts, setPosts] = useState([]);
-const [blogLoading, setBlogLoading] = useState(true);
-const [blogError, setBlogError] = useState(false);
-
-useEffect(() => {
-  const fetchPosts = async () => {
-    try {
-      setBlogLoading(true);
-      setBlogError(false);
-
-      const res = await axios.get(`${API_URL}posts/`);
-
-      // Handle both array and paginated API responses
-      const list = Array.isArray(res.data)
-        ? res.data
-        : Array.isArray(res.data?.results)
-        ? res.data.results
-        : [];
-
-      setPosts(list.slice(0, 4));
-
-    } catch (error) {
-      console.error("Error fetching blog posts:", error);
-      setBlogError(true);
-      setPosts([]);
-
-    } finally {
-      setBlogLoading(false);
-    }
-  };
-
-  fetchPosts();
-}, []);
-
   return (
     <div className="bg-[#fff8eb] text-black">
       <main>
@@ -183,74 +149,7 @@ useEffect(() => {
           </div>
         </section>
 
-        {/* BLOG */}
-        <section id="blog" className="border-t-2 border-black bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-12">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <SectionTitle>Blog</SectionTitle>
-              <a
-                href="/blog"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-black px-5 py-2 text-xs font-bold uppercase transition hover:bg-black hover:text-white"
-              >
-                Saare posts
-                <span aria-hidden="true">→</span>
-              </a>
-            </div>
-
-            {blogLoading && (
-              <p className="mt-10 text-sm text-black/60">Posts load ho rahe hain...</p>
-            )}
-
-            {blogError && (
-              <p className="mt-10 text-sm text-black/60">
-                Posts abhi load nahi ho paye. Thodi der baad try karo.
-              </p>
-            )}
-
-            {!blogLoading && !blogError && posts.length === 0 && (
-              <p className="mt-10 text-sm text-black/60">Jaldi hi naye posts aayenge.</p>
-            )}
-
-            {posts.length > 0 && (
-              <div className="mt-10 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-                {/* FEATURED (latest post) */}
-                <a
-                  href={`/blog/${posts[0].id}`}
-                  className="group flex flex-col overflow-hidden rounded-3xl border-2 border-black bg-orange-500 shadow-[8px_8px_0_0_#000] transition hover:-translate-y-1"
-                >
-                  {posts[0].image && (
-                    <img
-                      src={posts[0].image}
-                      alt={posts[0].title}
-                      loading="lazy"
-                      className="aspect-[16/9] w-full border-b-2 border-black object-cover"
-                    />
-                  )}
-                  <div className="flex flex-1 flex-col p-6">
-                    <span className="inline-block w-fit rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-bold uppercase">
-                      Latest
-                    </span>
-                    <h3 className="mt-4 text-3xl font-black uppercase leading-[0.95] tracking-tighter sm:text-4xl">
-                      {posts[0].title}
-                    </h3>
-                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-black/80">
-                      {posts[0].excerpt || posts[0].content}
-                    </p>
-                    <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase">
-                      <span>
-                        {posts[0].created_at &&
-                          new Date(posts[0].created_at).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                      </span>
-                      <span className="transition group-hover:translate-x-1">Padho →</span>
-                    </div>
-                  </div>
-                </a>
-
-                {/* BAAKI POSTS (numbered list) */}
+        {/* BAAKI POSTS (numbered list) */}
                 <ul className="flex flex-col gap-4">
                   {posts.slice(1).map((post, idx) => (
                     <li key={post.id}>
