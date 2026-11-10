@@ -35,7 +35,7 @@ const Login = ({ onLogin }) => {
     setBusy(true);
     setError("");
     try {
-      const { data } = await adminApi.post("/login/", { username, password });
+      const { data } = await adminApi.post("login/", { username, password });
       localStorage.setItem("admin_token", data.token);
       onLogin();
     } catch (err) {
@@ -44,6 +44,8 @@ const Login = ({ onLogin }) => {
       setBusy(false);
     }
   };
+
+  console.log(adminApi)
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fff8eb] px-4">
