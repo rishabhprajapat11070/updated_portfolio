@@ -1,5 +1,6 @@
-import { memo } from "react";
-
+// import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import axios from "axios";
 import greenrishabh from "../assets/greenrishabh.jpeg"
     
 // import DynamicSections from "../components/DynamicSections";
@@ -8,7 +9,7 @@ import greenrishabh from "../assets/greenrishabh.jpeg"
 /*  CV DATA — edit the data here react will update automaticlly      */
 /*  Jahan "TODO" likha hai wahan apni real details daalo               */
 /* ------------------------------------------------------------------ */
-
+const API_URL = import.meta.env.VITE_API_URL
 const profile = {
   name: "Rishabh Prajapat",
   title: "AI/ML & Python Backend Developer",
@@ -87,16 +88,20 @@ const Tag = ({ children }) => (
 );
 
 const Home = () => {
-// const [sections, setSections] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [blogLoading, setBlogLoading] = useState(true);
+  const [blogError, setBlogError] = useState(false);
 
-// useEffect(() => {
-//   adminApi.get("/sections/")
-//     .then(({ data }) => {
-//       console.log("sections:", data);              // debug ke liye
-//       setSections(Array.isArray(data) ? data : data.results || []);
-//     })
-//     .catch((e) => console.error("sections error:", e));
-// }, []);
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/posts/`) // TODO: apna endpoint match karo
+      .then((res) => {
+        const list = Array.isArray(res.data) ? res.data : res.data.results || [];
+              setPosts(list.slice(0, 4));
+      })
+      .catch(() => setBlogError(true))
+      .finally(() => setBlogLoading(false));
+  }, []);
   return (
     <div className="bg-[#fff8eb] text-black">
       <main>
@@ -154,6 +159,116 @@ const Home = () => {
               </p>
               <p className="mt-1 text-xs font-bold text-black/80">{profile.location}</p>
             </div>
+          </div>
+        </section>
+
+        {/* BLOG */}
+        <section id="blog" className="border-t-2 border-black bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-12">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <SectionTitle>Blog</SectionTitle>
+              <a
+                href="/blog"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-black px-5 py-2 text-xs font-bold uppercase transition hover:bg-black hover:text-white"
+              >
+                Saare posts
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+
+            {blogLoading && (
+              <p className="mt-10 text-sm text-black/60">Posts load ho rahe hain...</p>
+            )}
+
+            {blogError && (
+              <p className="mt-10 text-sm text-black/60">
+                Posts abhi load nahi ho paye. Thodi der baad try karo.
+              </p>
+            )}
+
+            {!blogLoading && !blogError && posts.length === 0 && (
+              <p className="mt-10 text-sm text-black/60">Jaldi hi naye posts aayenge.</p>
+            )}
+
+            {posts.length > 0 && (
+              <div className="mt-10 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+                {/* FEATURED (latest post) */}
+                <a
+                  href={`/blog/${posts[0].id}`}
+                  className="group flex flex-col overflow-hidden rounded-3xl border-2 border-black bg-orange-500 shadow-[8px_8px_0_0_#000] transition hover:-translate-y-1"
+                >
+                  {posts[0].image && (
+                    <img
+                      src={posts[0].image}
+                      alt={posts[0].title}
+                      loading="lazy"
+                      className="aspect-[16/9] w-full border-b-2 border-black object-cover"
+                    />
+                  )}
+                  <div className="flex flex-1 flex-col p-6">
+                    <span className="inline-block w-fit rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-bold uppercase">
+                      Latest
+                    </span>
+                    <h3 className="mt-4 text-3xl font-black uppercase leading-[0.95] tracking-tighter sm:text-4xl">
+                      {posts[0].title}
+                    </h3>
+                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-black/80">
+                      {posts[0].excerpt || posts[0].content}
+                    </p>
+                    <div className="mt-6 flex items-center justify-between text-xs font-bold uppercase">
+                      <span>
+                        {posts[0].created_at &&
+                          new Date(posts[0].created_at).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                      </span>
+                      <span className="transition group-hover:translate-x-1">Padho →</span>
+                    </div>
+                  </div>
+                </a>
+
+                {/* BAAKI POSTS (numbered list) */}
+                <ul className="flex flex-col gap-4">
+                  {posts.slice(1).map((post, idx) => (
+                    <li key={post.id}>
+                      <a
+                        href={`/blog/${post.id}`}
+                        className="group flex gap-4 rounded-2xl border-2 border-black bg-[#fff8eb] p-4 shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-orange-100"
+                      >
+                        <span className="text-4xl font-black leading-none tracking-tighter text-orange-600">
+                          {String(idx + 2).padStart(2, "0")}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          {post.created_at && (
+                            <p className="text-[11px] font-bold uppercase text-black/60">
+                              {new Date(post.created_at).toLocaleDateString("en-IN", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            </p>
+                          )}
+                          <h3 className="mt-1 text-lg font-black uppercase leading-tight tracking-tighter">
+                            {post.title}
+                          </h3>
+                          <p className="mt-2 line-clamp-2 text-sm text-black/70">
+                            {post.excerpt || post.content}
+                          </p>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className="self-center text-xl transition group-hover:translate-x-1"
+                        >
+                          →
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </section>
 
@@ -290,7 +405,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-
+                
         {/* CONTACT */}
         <section id="contact" className="border-t-2 border-black bg-black text-[#fff8eb]">
           <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:px-12">
